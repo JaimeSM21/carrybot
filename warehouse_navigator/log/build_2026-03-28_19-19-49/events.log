@@ -1,0 +1,107 @@
+[0.000000] (-) TimerEvent: {}
+[0.002074] (warehouse_navigator) JobQueued: {'identifier': 'warehouse_navigator', 'dependencies': OrderedDict()}
+[0.002171] (warehouse_navigator) JobStarted: {'identifier': 'warehouse_navigator'}
+[0.099692] (-) TimerEvent: {}
+[0.200647] (-) TimerEvent: {}
+[0.301638] (-) TimerEvent: {}
+[0.402138] (-) TimerEvent: {}
+[0.503101] (-) TimerEvent: {}
+[0.603413] (-) TimerEvent: {}
+[0.708964] (-) TimerEvent: {}
+[0.811284] (-) TimerEvent: {}
+[0.912161] (-) TimerEvent: {}
+[1.017810] (-) TimerEvent: {}
+[1.128441] (-) TimerEvent: {}
+[1.233045] (-) TimerEvent: {}
+[1.334236] (-) TimerEvent: {}
+[1.444351] (-) TimerEvent: {}
+[1.545423] (-) TimerEvent: {}
+[1.646137] (-) TimerEvent: {}
+[1.747215] (-) TimerEvent: {}
+[1.850102] (-) TimerEvent: {}
+[1.950924] (-) TimerEvent: {}
+[2.052351] (-) TimerEvent: {}
+[2.182996] (-) TimerEvent: {}
+[2.283571] (-) TimerEvent: {}
+[2.384395] (-) TimerEvent: {}
+[2.486216] (-) TimerEvent: {}
+[2.589674] (-) TimerEvent: {}
+[2.692674] (-) TimerEvent: {}
+[2.805857] (-) TimerEvent: {}
+[2.906560] (-) TimerEvent: {}
+[3.018094] (-) TimerEvent: {}
+[3.121768] (-) TimerEvent: {}
+[3.224532] (-) TimerEvent: {}
+[3.325127] (-) TimerEvent: {}
+[3.427430] (-) TimerEvent: {}
+[3.527875] (-) TimerEvent: {}
+[3.628399] (-) TimerEvent: {}
+[3.728732] (-) TimerEvent: {}
+[3.829284] (-) TimerEvent: {}
+[3.929610] (-) TimerEvent: {}
+[4.031583] (-) TimerEvent: {}
+[4.143137] (-) TimerEvent: {}
+[4.252239] (-) TimerEvent: {}
+[4.355763] (-) TimerEvent: {}
+[4.459217] (-) TimerEvent: {}
+[4.561124] (-) TimerEvent: {}
+[4.677947] (-) TimerEvent: {}
+[4.779079] (-) TimerEvent: {}
+[4.825870] (warehouse_navigator) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', 'build/warehouse_navigator', 'build', '--build-base', '/home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build', 'install', '--record', '/home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/emilio/turtlebot3_ws/src/warehouse_navigator', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/home/emilio/turtlebot3_ws/src/my_world/models', 'USER': 'emilio', 'GZ_CONFIG_PATH': '/opt/ros/jazzy/opt/gz_sim_vendor/share/gz:/opt/ros/jazzy/opt/sdformat_vendor/share/gz:/opt/ros/jazzy/opt/gz_gui_vendor/share/gz:/opt/ros/jazzy/opt/gz_transport_vendor/share/gz:/opt/ros/jazzy/opt/gz_rendering_vendor/share/gz:/opt/ros/jazzy/opt/gz_plugin_vendor/share/gz:/opt/ros/jazzy/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/jazzy/opt/gz_msgs_vendor/share/gz:/opt/ros/jazzy/opt/gz_common_vendor/share/gz', 'XDG_SESSION_TYPE': 'wayland', 'CLUTTER_DISABLE_MIPMAPPED_TEXT': '1', 'SHLVL': '1', 'LIBGL_ALWAYS_SOFTWARE': '1', 'LD_LIBRARY_PATH': '/home/emilio/turtlebot3_ws/install/custom_interface/lib:/opt/ros/jazzy/opt/gz_sim_vendor/lib:/opt/ros/jazzy/opt/gz_sensors_vendor/lib:/opt/ros/jazzy/opt/gz_physics_vendor/lib:/opt/ros/jazzy/opt/sdformat_vendor/lib:/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_gui_vendor/lib:/opt/ros/jazzy/opt/gz_transport_vendor/lib:/opt/ros/jazzy/opt/gz_rendering_vendor/lib:/opt/ros/jazzy/opt/gz_plugin_vendor/lib:/opt/ros/jazzy/opt/gz_fuel_tools_vendor/lib:/opt/ros/jazzy/opt/gz_msgs_vendor/lib:/opt/ros/jazzy/opt/gz_common_vendor/lib:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_tools_vendor/lib:/opt/ros/jazzy/opt/gz_ogre_next_vendor/lib:/opt/ros/jazzy/opt/gz_dartsim_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/emilio', 'OLDPWD': '/home/emilio/turtlebot3_ws/src', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '3388', 'ROS_LOG_DIR': '/home/emilio/my_logs', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/emilio/turtlebot3_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'emilio', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@wayland.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'emilio', 'TERM': 'xterm-256color', 'GAZEBO_MODEL_PATH': ':/opt/ros/jazzy/share/turtlebot3_gazebo/models', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'PATH': '/opt/ros/jazzy/opt/gz_msgs_vendor/bin:/opt/ros/jazzy/opt/gz_tools_vendor/bin:/opt/ros/jazzy/opt/gz_ogre_next_vendor/bin:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/emilio-VirtualBox:@/tmp/.ICE-unix/3347,unix/emilio-VirtualBox:/tmp/.ICE-unix/3347', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/dde7ba9c_4261_4301_af5a_fa5dbe747b80', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_Us.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.JLUUM3', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'GNOME_TERMINAL_SERVICE': ':1.99', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'ROS_DOMAIN_ID': '3', 'AMENT_PREFIX_PATH': '/home/emilio/turtlebot3_ws/install/turtlebot3_simulations:/home/emilio/turtlebot3_ws/install/turtlebot3_gazebo:/home/emilio/turtlebot3_ws/install/turtlebot3_fake_node:/home/emilio/turtlebot3_ws/install/show_msg:/home/emilio/turtlebot3_ws/install/my_world:/home/emilio/turtlebot3_ws/install/my_first_subscriber:/home/emilio/turtlebot3_ws/install/my_first_service:/home/emilio/turtlebot3_ws/install/my_first_publisher:/home/emilio/turtlebot3_ws/install/my_first_node:/home/emilio/turtlebot3_ws/install/my_first_action:/home/emilio/turtlebot3_ws/install/custom_interface:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator', 'TURTLEBOT3_MODEL': 'burger', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/python3.12/site-packages:/home/emilio/turtlebot3_ws/install/show_msg/lib/python3.12/site-packages:/home/emilio/turtlebot3_ws/install/my_first_subscriber/lib/python3.12/site-packages:/home/emilio/turtlebot3_ws/install/my_first_service/lib/python3.12/site-packages:/home/emilio/turtlebot3_ws/install/my_first_publisher/lib/python3.12/site-packages:/home/emilio/turtlebot3_ws/install/my_first_node/lib/python3.12/site-packages:/home/emilio/turtlebot3_ws/install/my_first_action/lib/python3.12/site-packages:/home/emilio/turtlebot3_ws/install/custom_interface/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'VTE_VERSION': '7600', 'CMAKE_PREFIX_PATH': '/home/emilio/turtlebot3_ws/install/turtlebot3_simulations:/home/emilio/turtlebot3_ws/install/turtlebot3_gazebo:/home/emilio/turtlebot3_ws/install/turtlebot3_fake_node:/home/emilio/turtlebot3_ws/install/my_world:/home/emilio/turtlebot3_ws/install/custom_interface:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor'}, 'shell': False}
+[4.879346] (-) TimerEvent: {}
+[4.979816] (-) TimerEvent: {}
+[5.092398] (-) TimerEvent: {}
+[5.197785] (-) TimerEvent: {}
+[5.316090] (-) TimerEvent: {}
+[5.418843] (-) TimerEvent: {}
+[5.521624] (-) TimerEvent: {}
+[5.587329] (warehouse_navigator) StdoutLine: {'line': b'running egg_info\n'}
+[5.587580] (warehouse_navigator) StdoutLine: {'line': b'creating build/warehouse_navigator/warehouse_navigator.egg-info\n'}
+[5.625234] (warehouse_navigator) StdoutLine: {'line': b'writing build/warehouse_navigator/warehouse_navigator.egg-info/PKG-INFO\n'}
+[5.625439] (-) TimerEvent: {}
+[5.626128] (warehouse_navigator) StdoutLine: {'line': b'writing dependency_links to build/warehouse_navigator/warehouse_navigator.egg-info/dependency_links.txt\n'}
+[5.626485] (warehouse_navigator) StdoutLine: {'line': b'writing entry points to build/warehouse_navigator/warehouse_navigator.egg-info/entry_points.txt\n'}
+[5.626809] (warehouse_navigator) StdoutLine: {'line': b'writing requirements to build/warehouse_navigator/warehouse_navigator.egg-info/requires.txt\n'}
+[5.627063] (warehouse_navigator) StdoutLine: {'line': b'writing top-level names to build/warehouse_navigator/warehouse_navigator.egg-info/top_level.txt\n'}
+[5.627403] (warehouse_navigator) StdoutLine: {'line': b"writing manifest file 'build/warehouse_navigator/warehouse_navigator.egg-info/SOURCES.txt'\n"}
+[5.680166] (warehouse_navigator) StdoutLine: {'line': b"reading manifest file 'build/warehouse_navigator/warehouse_navigator.egg-info/SOURCES.txt'\n"}
+[5.681198] (warehouse_navigator) StdoutLine: {'line': b"writing manifest file 'build/warehouse_navigator/warehouse_navigator.egg-info/SOURCES.txt'\n"}
+[5.681720] (warehouse_navigator) StdoutLine: {'line': b'running build\n'}
+[5.682058] (warehouse_navigator) StdoutLine: {'line': b'running build_py\n'}
+[5.682400] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build\n'}
+[5.682628] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build/lib\n'}
+[5.717969] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build/lib/warehouse_navigator\n'}
+[5.718188] (warehouse_navigator) StdoutLine: {'line': b'copying warehouse_navigator/__init__.py -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build/lib/warehouse_navigator\n'}
+[5.718466] (warehouse_navigator) StdoutLine: {'line': b'copying warehouse_navigator/nav_to_point.py -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build/lib/warehouse_navigator\n'}
+[5.718524] (warehouse_navigator) StdoutLine: {'line': b'running install\n'}
+[5.724047] (warehouse_navigator) StdoutLine: {'line': b'running install_lib\n'}
+[5.732167] (-) TimerEvent: {}
+[5.773155] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/python3.12/site-packages/warehouse_navigator\n'}
+[5.774010] (warehouse_navigator) StdoutLine: {'line': b'copying /home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build/lib/warehouse_navigator/__init__.py -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/python3.12/site-packages/warehouse_navigator\n'}
+[5.775391] (warehouse_navigator) StdoutLine: {'line': b'copying /home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/build/lib/warehouse_navigator/nav_to_point.py -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/python3.12/site-packages/warehouse_navigator\n'}
+[5.776023] (warehouse_navigator) StdoutLine: {'line': b'byte-compiling /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/python3.12/site-packages/warehouse_navigator/__init__.py to __init__.cpython-312.pyc\n'}
+[5.776499] (warehouse_navigator) StdoutLine: {'line': b'byte-compiling /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/python3.12/site-packages/warehouse_navigator/nav_to_point.py to nav_to_point.cpython-312.pyc\n'}
+[5.778093] (warehouse_navigator) StdoutLine: {'line': b'running install_data\n'}
+[5.778227] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/ament_index\n'}
+[5.778405] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/ament_index/resource_index\n'}
+[5.778590] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/ament_index/resource_index/packages\n'}
+[5.778938] (warehouse_navigator) StdoutLine: {'line': b'copying resource/warehouse_navigator -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/ament_index/resource_index/packages\n'}
+[5.779203] (warehouse_navigator) StdoutLine: {'line': b'copying package.xml -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/warehouse_navigator\n'}
+[5.779317] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/warehouse_navigator/launch\n'}
+[5.779546] (warehouse_navigator) StdoutLine: {'line': b'copying launch/navigate.launch.py -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/warehouse_navigator/launch\n'}
+[5.779755] (warehouse_navigator) StdoutLine: {'line': b'creating /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/warehouse_navigator/config\n'}
+[5.779935] (warehouse_navigator) StdoutLine: {'line': b'copying config/locations.json -> /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/share/warehouse_navigator/config\n'}
+[5.780932] (warehouse_navigator) StdoutLine: {'line': b'running install_egg_info\n'}
+[5.829320] (warehouse_navigator) StdoutLine: {'line': b'Copying build/warehouse_navigator/warehouse_navigator.egg-info to /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/python3.12/site-packages/warehouse_navigator-0.0.0-py3.12.egg-info\n'}
+[5.830219] (warehouse_navigator) StdoutLine: {'line': b'running install_scripts\n'}
+[5.836630] (-) TimerEvent: {}
+[5.938140] (-) TimerEvent: {}
+[6.044466] (-) TimerEvent: {}
+[6.140784] (warehouse_navigator) StdoutLine: {'line': b'Installing nav_to_point script to /home/emilio/turtlebot3_ws/src/warehouse_navigator/install/warehouse_navigator/lib/warehouse_navigator\n'}
+[6.141087] (warehouse_navigator) StdoutLine: {'line': b"writing list of installed files to '/home/emilio/turtlebot3_ws/src/warehouse_navigator/build/warehouse_navigator/install.log'\n"}
+[6.145895] (-) TimerEvent: {}
+[6.257105] (-) TimerEvent: {}
+[6.289924] (warehouse_navigator) CommandEnded: {'returncode': 0}
+[6.357350] (-) TimerEvent: {}
+[6.406551] (warehouse_navigator) JobEnded: {'identifier': 'warehouse_navigator', 'rc': 0}
+[6.407305] (-) EventReactorShutdown: {}
