@@ -1,0 +1,2 @@
+[console_scripts]
+nav_to_point = warehouse_navigator.nav_to_point:main
