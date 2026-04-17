@@ -29,9 +29,10 @@ setup(
             'pytest',
         ],
     },
-    entry_points={
+entry_points={
     'console_scripts': [
-        'ruta_fija = carrybot_nav_recogida.ruta_fija:main'
+        'ruta_fija = carrybot_nav_recogida.ruta_fija:main',
+        'initial_pose_pub = carrybot_nav_recogida.initial_pose_pub:main',
     ],
 },
 )
