@@ -1,8 +1,3 @@
-"""
-Módulo de navegación para la tarea CB-H4-05.
-Gestiona la ruta autónoma de recogida de pedidos y su entrega en el punto central.
-"""
-
 import rclpy
 import time
 import json
@@ -21,8 +16,7 @@ def crear_pose(x_coord, y_coord):
         y_coord: coordenada del eje Y
 
     Returns: 
-        pose (tipo: PoseStamped): objeto con la posicion y una orientacion respecto a 'map'
-    
+        pose (tipo: PoseStamped): objeto con la posicion y una orientacion respecto al mapa (frame 'map').
     """
     pose = PoseStamped()
     pose.header.frame_id = 'map'
@@ -40,19 +34,13 @@ def cargar_coordenadas():
         Ninguno
     
     Returns:
-        dict: diccionario de Python con los datos cargados del JSON
-        None: si hay algun problema en la lectura del archivo
-
+        datos: diccionario de Python con los datos cargados del JSON
     """
-    try:
-        paquete_dir = get_package_share_directory('carrybot_nav_recogida')
-        ruta_json = os.path.join(paquete_dir, 'config', 'coordenadas.json')
-        with open(ruta_json, 'r') as archivo:
-            datos = json.load(archivo)
-        return datos
-    except Exception as e:
-        print(f"ERROR: No se pudo cargar el archivo JSON de coordenadas. Detalles: {e}")
-        return None
+    paquete_dir = get_package_share_directory('carrybot_nav_recogida')
+    ruta_json = os.path.join(paquete_dir, 'config', 'coordenadas.json')
+    with open(ruta_json, 'r') as archivo:
+        datos = json.load(archivo)
+    return datos
 
 def main(args=None):
     """
@@ -66,15 +54,11 @@ def main(args=None):
     Returns:
         None
     """
-
     rclpy.init(args=args)
     navigator = BasicNavigator()
     navigator.waitUntilNav2Active()
 
     datos_rutas = cargar_coordenadas()
-    if datos_rutas is None:
-        return #si falla el JSON, salimos 
-    
     coord_entrega = datos_rutas['entrega']
     meta_entrega = crear_pose(coord_entrega['x'], coord_entrega['y'])
 
