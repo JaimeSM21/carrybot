@@ -1,3 +1,8 @@
+"""
+Módulo de navegación para la tarea CB-H4-05.
+Gestiona la ruta autónoma de recogida de pedidos y su entrega en el punto central.
+"""
+
 import rclpy
 import time
 import json
@@ -8,6 +13,17 @@ from nav2_simple_commander.robot_navigator import BasicNavigator
 from geometry_msgs.msg import PoseStamped
 
 def crear_pose(x_coord, y_coord):
+    """
+    Genera un mensaje de tipo PoseStamped para enviar coordenadas a Nav2.
+    
+    Argumentos:
+        x_coord: coordenada del eje X
+        y_coord: coordenada del eje Y
+
+    Returns: 
+        pose (tipo: PoseStamped): objeto con la posicion y una orientacion respecto a 'map'
+    
+    """
     pose = PoseStamped()
     pose.header.frame_id = 'map'
     pose.pose.position.x = float(x_coord)
@@ -16,18 +32,49 @@ def crear_pose(x_coord, y_coord):
     return pose
 
 def cargar_coordenadas():
-    paquete_dir = get_package_share_directory('carrybot_nav_recogida')
-    ruta_json = os.path.join(paquete_dir, 'config', 'coordenadas.json')
-    with open(ruta_json, 'r') as archivo:
-        datos = json.load(archivo)
-    return datos
+    """
+    Carga de forma segura el archivo coordenadas.json.
+    Implementa gestión de excepciones en caso de que el archivo no exista.
+    
+    Argumentos:
+        Ninguno
+    
+    Returns:
+        dict: diccionario de Python con los datos cargados del JSON
+        None: si hay algun problema en la lectura del archivo
+
+    """
+    try:
+        paquete_dir = get_package_share_directory('carrybot_nav_recogida')
+        ruta_json = os.path.join(paquete_dir, 'config', 'coordenadas.json')
+        with open(ruta_json, 'r') as archivo:
+            datos = json.load(archivo)
+        return datos
+    except Exception as e:
+        print(f"ERROR: No se pudo cargar el archivo JSON de coordenadas. Detalles: {e}")
+        return None
 
 def main(args=None):
+    """
+    Ciclo principal de ejecución. Coordina la lectura de pedidos 
+    y el envío secuencial de objetivos al sistema de navegación.
+    
+    Argumentos:
+        args (tipo list, opcional): argumentos de linea de comandos 
+            para inicializar rclpy, por defecto es None
+
+    Returns:
+        None
+    """
+
     rclpy.init(args=args)
     navigator = BasicNavigator()
     navigator.waitUntilNav2Active()
 
     datos_rutas = cargar_coordenadas()
+    if datos_rutas is None:
+        return #si falla el JSON, salimos 
+    
     coord_entrega = datos_rutas['entrega']
     meta_entrega = crear_pose(coord_entrega['x'], coord_entrega['y'])
 
