@@ -10,6 +10,9 @@ from action_msgs.msg import GoalStatus
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Twist
 from nav2_msgs.action import NavigateToPose, FollowWaypoints
+import subprocess
+import action_msgs.srv
+from geometry_msgs.msg import PoseStamped, TwistStamped
 
 
 class WebBridge(Node):
@@ -144,21 +147,38 @@ class WebBridge(Node):
     # ── Stop ──────────────────────────────────────────────────────────
 
     def _on_cancel(self, msg):
-        """Cancela cualquier accion activa en Nav2."""
+        """Para el robot: mata cualquier nodo de navegacion activo,
+        cancela el goal en Nav2 y publica velocidad cero."""
+
         self.get_logger().info('Cancelando accion activa...')
 
-        # Cancelar NavigateToPose
-        if self._nav_client._goal_handle is not None:
-            self._nav_client._goal_handle.cancel_goal_async()
+        # 1. Matar cualquier nodo de navegacion que este corriendo
+        for script in ['nav_to_point', 'sector_navigator', 'ruta_fija',
+                    'patrol_zone', 'delivery']:
+            subprocess.run(['pkill', '-f', script], capture_output=True)
 
-        # Cancelar FollowWaypoints
-        if self._wp_client._goal_handle is not None:
-            self._wp_client._goal_handle.cancel_goal_async()
+        # 2. Cancelar el goal en Nav2 (navigate_to_pose)
+        cancel_client = self.create_client(
+            action_msgs.srv.CancelGoal,
+            '/navigate_to_pose/_action/cancel_goal'
+        )
+        if cancel_client.wait_for_service(timeout_sec=2.0):
+            cancel_client.call_async(action_msgs.srv.CancelGoal.Request())
 
-        # Parar el robot publicando velocidad cero
-        
-        stop_pub = self.create_publisher(Twist, '/cmd_vel_nav', 10)
-        stop_pub.publish(Twist())
+        # 3. Cancelar el goal en Nav2 (follow_waypoints)
+        cancel_wp = self.create_client(
+            action_msgs.srv.CancelGoal,
+            '/follow_waypoints/_action/cancel_goal'
+        )
+        if cancel_wp.wait_for_service(timeout_sec=2.0):
+            cancel_wp.call_async(action_msgs.srv.CancelGoal.Request())
+
+        # 4. Publicar velocidad cero para parar el robot fisicamente
+        stop = TwistStamped()
+        stop.header.frame_id = 'base_link'
+        stop.header.stamp = self.get_clock().now().to_msg()
+        stop_pub = self.create_publisher(TwistStamped, '/cmd_vel', 10)
+        stop_pub.publish(stop)
 
         self._publish_status('Accion cancelada. Robot detenido.')
 
