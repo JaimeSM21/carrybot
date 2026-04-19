@@ -1,4 +1,0 @@
-source;share/warehouse_navigator/hook/pythonpath.dsv
-source;share/warehouse_navigator/hook/pythonpath.sh
-source;share/warehouse_navigator/hook/ament_prefix_path.dsv
-source;share/warehouse_navigator/hook/ament_prefix_path.sh
