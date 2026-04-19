@@ -1,12 +1,14 @@
 import json
 import os
-
+import subprocess
+import threading
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from std_msgs.msg import String
 from action_msgs.msg import GoalStatus
 from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import Twist
 from nav2_msgs.action import NavigateToPose, FollowWaypoints
 
 
@@ -24,15 +26,17 @@ class WebBridge(Node):
             self.locations = json.load(f)
         with open(os.path.join(base, 'sectors.json')) as f:
             self.zones = json.load(f)
-        """with open(os.path.join(base, 'paquetes.json')) as f:
-            self.packages = json.load(f)"""
+        with open(os.path.join(base, 'coordenadas.json')) as f:
+            self.packages = json.load(f)
 
         self._nav_client = ActionClient(self, NavigateToPose, 'navigate_to_pose')
         self._wp_client  = ActionClient(self, FollowWaypoints, 'follow_waypoints')
 
         self.create_subscription(String, '/web/nav_goal',     self._on_nav_goal,     10)
         self.create_subscription(String, '/web/patrol_goal',  self._on_patrol_goal,  10)
-        self.create_subscription(String, '/web/package_goal', self._on_package_goal, 10)
+        self.create_subscription(String, '/web/ruta_fija', self._on_ruta_fija, 10)
+        self.create_subscription(String, '/web/cancel', self._on_cancel, 10)
+        
 
         self._status_pub       = self.create_publisher(String, '/web/status',            10)
         self._announcement_pub = self.create_publisher(String, '/delivery/announcement', 10)
@@ -115,65 +119,48 @@ class WebBridge(Node):
         else:
             self._publish_status(
                 f"Patrulla '{zone}' terminada. Fallidos: {list(r.result.missed_waypoints)}")
+            
 
-    # ── delivery ──────────────────────────────────────────────────────────
+    # ── ruta_fija ──────────────────────────────────────────────────────────
 
-    def _on_package_goal(self, msg):
-        pkg = msg.data.strip()
-        pkg_pose = None
-        for shelf, data in self.packages.items():
-            if shelf == 'PuntoDeCarga':
-                continue
-            if pkg in data.get('paquetes', {}):
-                pkg_pose = data['paquetes'][pkg]
-                break
-        if pkg_pose is None:
-            self._publish_status(f"ERROR: paquete '{pkg}' no encontrado")
-            return
-        self._publish_status(f"Recogiendo '{pkg}'...")
-        goal_msg = NavigateToPose.Goal()
-        goal_msg.pose = self._build_pose(pkg_pose)
-        self._nav_client.wait_for_server()
-        self._nav_client.send_goal_async(goal_msg).add_done_callback(
-            lambda f: self._pickup_response(f, pkg))
+    def _on_ruta_fija(self, msg):
+        self._publish_status("Iniciando ruta fija de todos los pedidos...")
 
-    def _pickup_response(self, future, pkg):
-        gh = future.result()
-        if not gh.accepted:
-            self._publish_status(f"Recogida '{pkg}' RECHAZADA")
-            return
-        gh.get_result_async().add_done_callback(
-            lambda f: self._pickup_result(f, pkg))
+        def run():                                          # ← dentro del método
+            try:
+                result = subprocess.run(
+                    ['ros2', 'run', 'carrybot_nav_recogida', 'ruta_fija'],
+                    capture_output=True, text=True
+                )
+                if result.returncode == 0:
+                    self._publish_status("Ruta fija completada.")
+                else:
+                    self._publish_status(f"Ruta fija fallida: {result.stderr[:100]}")
+            except Exception as e:
+                self._publish_status(f"Error: {str(e)}")
 
-    def _pickup_result(self, future, pkg):
-        r = future.result()
-        if r.status != GoalStatus.STATUS_SUCCEEDED:
-            self._publish_status(f"Fallo al recoger '{pkg}'")
-            return
-        ann = String(data=f"RECOGIDA: '{pkg}' recogido. Dirigiéndose al PuntoDeCarga.")
-        self._announcement_pub.publish(ann)
-        self._publish_status(ann.data)
-        goal_msg = NavigateToPose.Goal()
-        goal_msg.pose = self._build_pose(self.packages['PuntoDeCarga'])
-        self._nav_client.send_goal_async(goal_msg).add_done_callback(
-            lambda f: self._discharge_response(f, pkg))
+        threading.Thread(target=run, daemon=True).start()  
 
-    def _discharge_response(self, future, pkg):
-        gh = future.result()
-        if not gh.accepted:
-            self._publish_status("Descarga RECHAZADA")
-            return
-        gh.get_result_async().add_done_callback(
-            lambda f: self._discharge_result(f, pkg))
+    # ── Stop ──────────────────────────────────────────────────────────
 
-    def _discharge_result(self, future, pkg):
-        r = future.result()
-        if r.status == GoalStatus.STATUS_SUCCEEDED:
-            ann = String(data=f"ENTREGA: '{pkg}' entregado correctamente.")
-            self._announcement_pub.publish(ann)
-            self._publish_status(ann.data)
-        else:
-            self._publish_status(f"Fallo al entregar '{pkg}'")
+    def _on_cancel(self, msg):
+        """Cancela cualquier accion activa en Nav2."""
+        self.get_logger().info('Cancelando accion activa...')
+
+        # Cancelar NavigateToPose
+        if self._nav_client._goal_handle is not None:
+            self._nav_client._goal_handle.cancel_goal_async()
+
+        # Cancelar FollowWaypoints
+        if self._wp_client._goal_handle is not None:
+            self._wp_client._goal_handle.cancel_goal_async()
+
+        # Parar el robot publicando velocidad cero
+        
+        stop_pub = self.create_publisher(Twist, '/cmd_vel_nav', 10)
+        stop_pub.publish(Twist())
+
+        self._publish_status('Accion cancelada. Robot detenido.')
 
 
 def main():
