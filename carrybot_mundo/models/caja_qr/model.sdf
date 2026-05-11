@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!--
+  caja_qr/model.sdf
+  =================
+  Modelo SDF de una caja de cartón con código QR en la cara frontal (+X).
+  Compatible con Gazebo Harmonic (gz-sim 8) y SDF 1.9.
+
+  Estructura visual:
+    - cuerpo_visual   : caja de cartón marrón (0.30 x 0.30 x 0.30 m)
+    - qr_visual       : panel delgado pegado a la cara +X con la textura del QR
+
+  El panel QR es una caja de 1 mm de grosor; así la textura se ve plana
+  sobre la cara de la caja sin usar mallas externas (no requiere Blender).
+
+  Colisión:
+    - Solo el cuerpo principal. El panel QR no tiene colisión propia
+      (evita problemas de física con geometrías muy delgadas).
+-->
+<sdf version="1.9">
+  <model name="caja_qr">
+
+    <!-- La caja es estática: no rueda ni se mueve por física -->
+    <static>true</static>
+
+    <link name="caja_link">
+
+      <!-- ── Pose del centro de masa: encima del suelo ── -->
+      <pose>0 0 0 0 0 0</pose>
+
+      <!-- ── Inercia (ligera, es estática pero se define por buena práctica) ── -->
+      <inertial>
+        <mass>2.0</mass>
+        <inertia>
+          <ixx>0.015</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.015</iyy> <iyz>0</iyz>
+          <izz>0.015</izz>
+        </inertia>
+      </inertial>
+
+      <!-- ── Colisión: cuerpo principal de la caja ── -->
+      <collision name="caja_col">
+        <geometry>
+          <box>
+            <size>0.30 0.30 0.30</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode><mu>0.8</mu><mu2>0.8</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+
+      <!-- ── Visual 1: cuerpo de cartón marrón ── -->
+      <visual name="cuerpo_visual">
+        <geometry>
+          <box>
+            <size>0.30 0.30 0.30</size>
+          </box>
+        </geometry>
+        <material>
+          <!-- Color cartón -->
+          <ambient>0.55 0.38 0.18 1</ambient>
+          <diffuse>0.65 0.45 0.22 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+      </visual>
+
+      <!-- ── Visual 2: panel QR en la cara frontal (+X) ──────────────────────
+           Desplazado 0.151 m en X (0.15 m = mitad de la caja + 0.001 m offset)
+           para que quede pegado a la superficie sin z-fighting.
+           Rotado 90° en Y para que la normal apunte en +X.
+      ─────────────────────────────────────────────────────────────────────── -->
+      <visual name="qr_visual">
+        <pose>0.151 0 0  0 0 0</pose>
+        <geometry>
+          <box>
+            <!-- Grosor mínimo × ancho del panel × alto del panel -->
+            <size>0.001 0.26 0.26</size>
+          </box>
+        </geometry>
+        <material>
+          <pbr>
+            <metal>
+              <!--
+                Ruta relativa al directorio del modelo.
+                Gazebo Harmonic resuelve model:// buscando en GZ_SIM_RESOURCE_PATH
+                y en los paths declarados en el fichero world con <uri>.
+              -->
+              <albedo_map>model://caja_qr/materials/textures/QR-prueba1.png</albedo_map>
+              <metalness>0.0</metalness>
+              <roughness>0.9</roughness>
+            </metal>
+          </pbr>
+          <!-- Fallback si PBR no está disponible -->
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+        </material>
+      </visual>
+
+    </link>
+  </model>
+</sdf>
