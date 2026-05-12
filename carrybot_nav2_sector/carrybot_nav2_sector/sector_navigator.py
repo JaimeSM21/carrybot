@@ -188,8 +188,14 @@ class SectorNavigator(Node):
 
     def _feedback_callback(self, feedback_msg):
         """
-        Callback de feedback que muestra el waypoint actual y lanza
-        la verificacion de posicion cuando el indice cambia.
+        Callback de feedback que muestra el waypoint actual y verifica
+        la posicion del robot en el momento exacto en que el indice sube.
+
+        La verificacion se dispara cuando current_waypoint aumenta: en ese
+        instante Nav2 ya ha declarado el waypoint anterior como alcanzado y
+        la posicion de /amcl_pose refleja donde quedo el robot al terminar.
+        No se usa ningun timer porque el cambio de indice ya es la senal
+        de que el waypoint fue procesado por Nav2.
 
         Args:
             feedback_msg: Mensaje de feedback con current_waypoint.
@@ -201,41 +207,26 @@ class SectorNavigator(Node):
             f"  Dirigiendose al waypoint {waypoint_actual + 1} de {total}..."
         )
 
-        # Solo verificamos si el waypoint ha cambiado Y han pasado al menos
-        # 3 segundos desde el cambio (para que el robot este parado)
+        # El indice subio: el waypoint anterior acaba de ser procesado por Nav2.
+        # Verificamos la posicion en este momento exacto.
         if waypoint_actual > self.current_waypoint_index:
+            wp_completed = self.current_waypoint_index
+            wp_data = self.zones[self.zone]['waypoints'][wp_completed]
 
-            # Guardamos el momento del cambio la primera vez
-            if not hasattr(self, '_waypoint_change_time'):
-                self._waypoint_change_time = self.get_clock().now()
-                self._waypoint_to_verify = self.current_waypoint_index
-                self.current_waypoint_index = waypoint_actual
-                return
+            try:
+                self.verify_waypoint_position(
+                    wp_index=wp_completed,
+                    expected_x=float(wp_data['x']),
+                    expected_y=float(wp_data['y'])
+                )
+                self.get_logger().info(
+                    f"  Verificacion OK: waypoint {wp_completed + 1} alcanzado."
+                )
+            except WaypointVerificationError as err:
+                self.get_logger().warn(f"  ADVERTENCIA de posicion: {err}")
 
-            # Calculamos cuanto tiempo ha pasado desde el cambio
-            elapsed = (self.get_clock().now() -
-                    self._waypoint_change_time).nanoseconds / 1e9
-
-            if elapsed >= 3.0:
-                wp_data = self.zones[self.zone]['waypoints'][self._waypoint_to_verify]
-
-                try:
-                    self.verify_waypoint_position(
-                        wp_index=self._waypoint_to_verify,
-                        expected_x=float(wp_data['x']),
-                        expected_y=float(wp_data['y'])
-                    )
-                    self.get_logger().info(
-                        f"  Verificacion OK: waypoint "
-                        f"{self._waypoint_to_verify + 1} alcanzado correctamente."
-                    )
-                except WaypointVerificationError as err:
-                    self.get_logger().warn(
-                        f"  ADVERTENCIA de posicion: {err}"
-                    )
-                finally:
-                    del self._waypoint_change_time
-                    self.current_waypoint_index = waypoint_actual
+            # Actualizar el indice DESPUES de verificar, no antes
+            self.current_waypoint_index = waypoint_actual
 
     def _result_callback(self, future):
         """
