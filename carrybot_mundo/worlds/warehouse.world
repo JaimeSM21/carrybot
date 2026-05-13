@@ -81,5 +81,19 @@
      <pose>0 0 0 0 0 0</pose>
    </include>
 
+    <!-- Caja con QR cerca del PuntoDeCarga -->
+    <include>
+      <uri>model://caja_qr</uri>
+      <name>caja_qr_001</name>
+      <!--
+        Pose: x      y      z     roll  pitch  yaw
+              4.90   1.80   0.15  0     0      1.5708
+        yaw=1.5708 (90°) → la cara con el QR (+X del modelo) apunta hacia -Y,
+        que es la dirección desde la que el robot se aproxima desde el pasillo.
+        Ajusta yaw si tu mapa tiene otra disposición.
+      -->
+      <pose>-0.000371812580851838 1.0060228109359741 0.15 0 0 1.5708</pose>
+    </include>
+
   </world>
 </sdf>

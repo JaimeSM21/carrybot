@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>carrybot_vision</name>
+  <version>0.1.0</version>
+  <description>
+    Paquete de visión artificial de CarryBot.
+    Detecta cajas (contornos rectangulares) y códigos QR en el stream de
+    la cámara del TurtleBot3. Publica resultados en /package/detection y
+    el frame anotado en /camera/processed.
+  </description>
+
+  <maintainer email="tu_email@ejemplo.com">Emilio Sanchez Granado</maintainer>
+  <license>MIT</license>
+
+  <!-- Dependencias de compilación -->
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- Dependencias ROS2 -->
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>cv_bridge</depend>
+
+  <!-- Dependencias de sistema (gestionadas por rosdep) -->
+  <exec_depend>python3-opencv</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

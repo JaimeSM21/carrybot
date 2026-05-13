@@ -1,3 +1,15 @@
+"""
+Este módulo genera la descripción de lanzamiento completa del sistema CarryBot.
+
+Orquesta el arranque secuencial de los tres componentes principales:
+    1. Gazebo con el mundo warehouse.
+    2. Nav2 y RViz2 (tras 5 segundos para que Gazebo esté listo).
+    3. Publicador de la posición inicial para AMCL (tras 20 segundos para que Nav2 esté listo).
+
+Functions:
+    generate_launch_description(): Genera y devuelve la descripción de lanzamiento completa.
+"""
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -8,15 +20,50 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    """Genera la descripción de lanzamiento completa del sistema CarryBot.
+
+    Orquesta el arranque secuencial de Gazebo, Nav2 con RViz2 y el publicador
+    de la posición inicial, utilizando temporizadores para respetar los tiempos
+    de inicialización de cada componente.
+
+    Returns:
+        LaunchDescription: Objeto con todas las acciones de lanzamiento configuradas.
+
+    Raises:
+        PackageNotFoundError: Si los paquetes 'carrybot_mundo' o 'carrybot_nav2_punto'
+            no se encuentran instalados.
+        FileNotFoundError: Si alguno de los archivos de lanzamiento necesarios no existe.
+    """
+
+    # Obtener y validar los directorios de los paquetes necesarios
+    try:
+        carrybot_mundo_share = get_package_share_directory('carrybot_mundo')
+        carrybot_nav2_share = get_package_share_directory('carrybot_nav2_punto')
+    except Exception as err:
+        raise Exception(
+            f"No se ha encontrado uno de los paquetes necesarios: {err}"
+        )
+
+    # Validar que los archivos de lanzamiento existen antes de usarlos
+    world_launch_path = os.path.join(
+        carrybot_mundo_share, 'launch', 'my_world.launch.py'
+    )
+    if not os.path.exists(world_launch_path):
+        raise FileNotFoundError(
+            f"No se ha encontrado el archivo de lanzamiento del mundo en: {world_launch_path}"
+        )
+
+    nav2_launch_path = os.path.join(
+        carrybot_nav2_share, 'launch', 'my_tb3_navigator.launch.py'
+    )
+    if not os.path.exists(nav2_launch_path):
+        raise FileNotFoundError(
+            f"No se ha encontrado el archivo de lanzamiento de Nav2 en: {nav2_launch_path}"
+        )
 
     # --- 1. Gazebo con el mundo warehouse ---
     gazebo_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory('carrybot_mundo'),
-                'launch', 'my_world.launch.py'
-            )
-        )
+        PythonLaunchDescriptionSource(world_launch_path)
     )
 
     # --- 2. Nav2 + RViz (espera 5s a que Gazebo arranque) ---
@@ -24,12 +71,7 @@ def generate_launch_description():
         period=5.0,
         actions=[
             IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(
-                        get_package_share_directory('carrybot_nav2_punto'),
-                        'launch', 'my_tb3_navigator.launch.py'
-                    )
-                ),
+                PythonLaunchDescriptionSource(nav2_launch_path),
                 launch_arguments={'use_sim_time': 'true'}.items()
             )
         ]
