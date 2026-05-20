@@ -54,7 +54,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     # Ruta al archivo del mapa
-    map_path = os.path.join(carrybot_share, 'map', 'my_map.yaml')
+    map_path = os.path.join(carrybot_share, 'map', 'real_map.yaml')
     if not os.path.exists(map_path):
         raise FileNotFoundError(
             f"No se ha encontrado el archivo del mapa en: {map_path}"
@@ -107,7 +107,6 @@ def generate_launch_description():
             ),
             launch_arguments={
                 'map': map_dir,
-                'use_sim_time': use_sim_time,
                 'params_file': param_dir
             }.items(),
         ),
@@ -118,7 +117,6 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             arguments=['-d', rviz_config_dir],
-            parameters=[{'use_sim_time': use_sim_time}],
             output='screen'
         ),
     ])
