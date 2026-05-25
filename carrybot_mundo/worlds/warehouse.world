@@ -92,7 +92,7 @@
         que es la dirección desde la que el robot se aproxima desde el pasillo.
         Ajusta yaw si tu mapa tiene otra disposición.
       -->
-      <pose>-1 -1 0.15 0 0 3</pose>
+      <pose>-1 -0.5 0.15 0 0 3.2</pose>
     </include>
 
   </world>
