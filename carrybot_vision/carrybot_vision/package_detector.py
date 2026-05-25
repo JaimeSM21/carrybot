@@ -160,18 +160,50 @@ class PackageDetector(Node):
         self, frame: np.ndarray
     ) -> tuple[str | None, np.ndarray | None]:
         """
-        Detecta y decodifica el primer QR encontrado en el frame.
+        Intenta leer el QR con múltiples estrategias de preprocesado.
+        Orden: imagen original → escala de grises umbralizada → upscale x2.
+        """
+        candidates = self._build_candidates(frame)
+        for img in candidates:
+            data, bbox, _ = self.qr_detector.detectAndDecode(img)
+            if data and bbox is not None:
+                return data, bbox
+        return None, None
 
-        Args:
-            frame: Imagen BGR.
+
+    def _build_candidates(self, frame: np.ndarray) -> list[np.ndarray]:
+        """
+        Genera variantes del frame para maximizar la probabilidad de lectura.
 
         Returns:
-            (data_string, bbox) si hay QR; (None, None) si no.
+            Lista de imágenes BGR en orden de preferencia.
         """
-        data, bbox, _ = self.qr_detector.detectAndDecode(frame)
-        if data and bbox is not None:
-            return data, bbox
-        return None, None
+        results = []
+
+        # 1. Frame original
+        results.append(frame)
+
+        # 2. Escala de grises con threshold de Otsu (limpia ruido de textura)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        _, otsu = cv2.threshold(
+            gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+        )
+        results.append(cv2.cvtColor(otsu, cv2.COLOR_GRAY2BGR))
+
+        # 3. Upscale x2 con interpolación cúbica (más píxeles para el detector)
+        upscaled = cv2.resize(
+            frame, None, fx=2.0, fy=2.0, interpolation=cv2.INTER_CUBIC
+        )
+        results.append(upscaled)
+
+        # 4. Upscale x2 + Otsu (combinación más agresiva)
+        gray_up = cv2.cvtColor(upscaled, cv2.COLOR_BGR2GRAY)
+        _, otsu_up = cv2.threshold(
+            gray_up, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+        )
+        results.append(cv2.cvtColor(otsu_up, cv2.COLOR_GRAY2BGR))
+
+        return results
 
     def _draw_qr(
         self, frame: np.ndarray, bbox: np.ndarray, data: str
