@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'web_bridge = carrybot_web_bridge.web_bridge:main',
+            'qr_detector  = carrybot_web_bridge.carrybot_detector_ros2:main',
         ],
     },
 )
