@@ -28,6 +28,9 @@ Formato QR recomendado (JSON):
 """
 
 import json
+import os
+import time
+from datetime import datetime
 
 import cv2
 import numpy as np
@@ -60,6 +63,20 @@ class PackageDetector(Node):
     CANNY_HIGH: int     = 130    # umbral alto de Canny
     APPROX_EPSILON: float = 0.03 # tolerancia approxPolyDP (% del perímetro)
 
+    # ── Log de detecciones ────────────────────────────────────────────────────
+    # Fichero donde se acumulan todas las detecciones de paquetes
+    LOG_FILE: str = '/home/emilio/turtlebot3_ws/src/carrybot/carrybot_vision/detecciones.json'
+    # Segundos mínimos entre dos entradas consecutivas (evita spam)
+    LOG_COOLDOWN: float = 5.0
+
+    # ── Datos fijos del paquete (mientras el QR no sea legible) ──────────────
+    PACKAGE_DATA: dict = {
+        "id":       "PKG-001",
+        "dest":     "Estanteria1",
+        "weight":   "2.5kg",
+        "priority": "normal",
+    }
+
     # ── Colores BGR ───────────────────────────────────────────────────────────
     COLOR_BOX: tuple = (0, 200, 50)    # verde — caja detectada
     COLOR_QR: tuple  = (0, 255, 0)     # verde claro — QR detectado
@@ -68,6 +85,7 @@ class PackageDetector(Node):
         super().__init__('package_detector')
         self.bridge       = CvBridge()
         self.qr_detector  = cv2.QRCodeDetector()
+        self._last_log_time: float = 0.0   # timestamp de la última entrada guardada
 
         self.sub_image = self.create_subscription(
             Image,
@@ -152,8 +170,78 @@ class PackageDetector(Node):
         if boxes:
             result['box_detected'] = True
             result['boxes']        = boxes
+            # Guardar detección en el log JSON (con cooldown)
+            self._log_detection()
 
         return result, annotated
+
+       # ── Log de detecciones ────────────────────────────────────────────────────
+    def _log_detection(self) -> None:
+        """
+        Escribe una entrada en el fichero JSON cuando se detecta un paquete.
+ 
+        Respeta un cooldown de LOG_COOLDOWN segundos para evitar entradas
+        duplicadas cuando la caja permanece en el campo de visión.
+ 
+        El fichero LOG_FILE es una lista JSON que se va acumulando:
+        [
+          {
+            "timestamp": "2026-05-09T18:35:04",
+            "qr_raw": "{...}",
+            "qr_parsed": { "id": "...", "dest": "...", ... }
+          },
+          ...
+        ]
+        """
+        now = time.time()
+        if now - self._last_log_time < self.LOG_COOLDOWN:
+            return   # demasiado pronto, ignorar
+ 
+        self._last_log_time = now
+ 
+        qr_raw = json.dumps(self.PACKAGE_DATA, ensure_ascii=False,
+                            separators=(',', ':'))
+        entry = {
+            "timestamp": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+            "qr_raw":    qr_raw,
+            "qr_parsed": dict(self.PACKAGE_DATA),
+        }
+ 
+        # Leer log existente
+        log: list = []
+        if os.path.exists(self.LOG_FILE):
+            try:
+                with open(self.LOG_FILE, 'r', encoding='utf-8') as fh:
+                    log = json.load(fh)
+                    if not isinstance(log, list):
+                        log = []
+            except (json.JSONDecodeError, OSError):
+                log = []
+ 
+        # Comprobar si el id ya está registrado — si es así, no añadir
+        current_id = self.PACKAGE_DATA.get('id')
+        ids_en_log = [
+            e.get('qr_parsed', {}).get('id')
+            for e in log
+            if isinstance(e.get('qr_parsed'), dict)
+        ]
+        if current_id in ids_en_log:
+            self.get_logger().info(
+                f'[LOG] Paquete {current_id} ya registrado — entrada omitida.'
+            )
+            return
+ 
+        # ID nuevo → añadir entrada y guardar
+        log.append(entry)
+        try:
+            with open(self.LOG_FILE, 'w', encoding='utf-8') as fh:
+                json.dump(log, fh, ensure_ascii=False, indent=2)
+            self.get_logger().info(
+                f'[LOG] Detección guardada → {self.LOG_FILE}  '
+                f'(total: {len(log)})'
+            )
+        except OSError as exc:
+            self.get_logger().warn(f'No se pudo escribir el log: {exc}')
 
     # ── Detección QR ─────────────────────────────────────────────────────────
     def _detect_qr(

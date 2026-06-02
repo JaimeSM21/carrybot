@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-06-02T14:05:54",
+    "qr_raw": "{\"id\":\"PKG-001\",\"dest\":\"Estanteria1\",\"weight\":\"2.5kg\",\"priority\":\"normal\"}",
+    "qr_parsed": {
+      "id": "PKG-001",
+      "dest": "Estanteria1",
+      "weight": "2.5kg",
+      "priority": "normal"
+    }
+  }
+]
