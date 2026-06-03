@@ -286,9 +286,20 @@ class WebBridge(Node):
 
         def run():
             try:
+                # Construir entorno con ROS2 y el workspace cargados
+                env = os.environ.copy()
+                env['TURTLEBOT3_MODEL'] = 'burger_cam'
+                
                 result = subprocess.run(
-                    ['ros2', 'run', 'carrybot_nav_recogida', 'ruta_fija'],
-                    capture_output=True, text=True
+                    'source /opt/ros/jazzy/setup.bash && '
+                    'source ~/turtlebot3_ws/install/setup.bash && '
+                    'ros2 run carrybot_nav_recogida ruta_fija',
+                    shell=True,
+                    executable='/bin/bash',
+                    capture_output=True,
+                    text=True,
+                    input='1\n',
+                    env=env,
                 )
                 if result.returncode == 0:
                     self._publish_status("Ruta fija completada.")
@@ -296,14 +307,8 @@ class WebBridge(Node):
                     self._publish_status(
                         f"Ruta fija fallida: {result.stderr[:100]}"
                     )
-            except FileNotFoundError:
-                self._publish_status(
-                    "ERROR: no se ha encontrado el ejecutable 'ros2'. "
-                    "Comprueba que ROS 2 está correctamente instalado."
-                )
             except Exception as err:
                 self._publish_status(f"ERROR inesperado en la ruta fija: {err}")
-
         threading.Thread(target=run, daemon=True).start()
 
     # ── pedido_individual ─────────────────────────────────────────────────────
@@ -327,9 +332,13 @@ class WebBridge(Node):
         def run():
             try:
                 result = subprocess.run(
-                    ['ros2', 'run', 'carrybot_nav_recogida', 'ruta_fija',
-                     '--pedido', nombre],
-                    capture_output=True, text=True
+                    f'source /opt/ros/jazzy/setup.bash && '
+                    f'source ~/turtlebot3_ws/install/setup.bash && '
+                    f'ros2 run carrybot_nav_recogida ruta_fija --pedido {nombre}',
+                    shell=True,
+                    executable='/bin/bash',
+                    capture_output=True,
+                    text=True,
                 )
                 if result.returncode == 0:
                     self._publish_status(f"Pedido '{nombre}' completado.")

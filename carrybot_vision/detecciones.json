@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": "2026-06-03T04:31:22",
+    "qr_raw": "{\"id\":\"  1\",\"dest\":\"Estanteria1\",\"weight\":\"2.5kg\",\"priority\":\"normal\"}",
+    "qr_parsed": {
+      "id": "  1",
+      "dest": "Estanteria1",
+      "weight": "2.5kg",
+      "priority": "normal"
+    }
+  },
+  {
+    "timestamp": "2026-06-03T04:36:49",
+    "qr_raw": "{\"id\":\"  2\",\"dest\":\"Estanteria1\",\"weight\":\"2.5kg\",\"priority\":\"normal\"}",
+    "qr_parsed": {
+      "id": "  2",
+      "dest": "Estanteria1",
+      "weight": "2.5kg",
+      "priority": "normal"
+    }
+  },
+  {
+    "timestamp": "2026-06-03T04:38:02",
+    "qr_raw": "{\"id\":\"  3\",\"dest\":\"Estanteria1\",\"weight\":\"2.5kg\",\"priority\":\"normal\"}",
+    "qr_parsed": {
+      "id": "  3",
+      "dest": "Estanteria1",
+      "weight": "2.5kg",
+      "priority": "normal"
+    }
+  },
+  {
+    "timestamp": "2026-06-03T04:38:17",
+    "qr_raw": "{\"id\":\"  4\",\"dest\":\"Estanteria1\",\"weight\":\"2.5kg\",\"priority\":\"normal\"}",
+    "qr_parsed": {
+      "id": "  4",
+      "dest": "Estanteria1",
+      "weight": "2.5kg",
+      "priority": "normal"
+    }
+  },
+  {
+    "timestamp": "2026-06-03T04:50:14",
+    "qr_raw": "{\"id\":\"  5\",\"dest\":\"Estanteria1\",\"weight\":\"2.5kg\",\"priority\":\"normal\"}",
+    "qr_parsed": {
+      "id": "  5",
+      "dest": "Estanteria1",
+      "weight": "2.5kg",
+      "priority": "normal"
+    }
+  },
+  {
+    "timestamp": "2026-06-03T05:00:01",
+    "qr_raw": "{\"id\":\"  6\",\"dest\":\"Estanteria1\",\"weight\":\"2.5kg\",\"priority\":\"normal\"}",
+    "qr_parsed": {
+      "id": "  6",
+      "dest": "Estanteria1",
+      "weight": "2.5kg",
+      "priority": "normal"
+    }
+  }
+]
