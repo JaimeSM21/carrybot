@@ -82,19 +82,18 @@
         <material>
           <pbr>
             <metal>
-              <!--
-                Ruta relativa al directorio del modelo.
-                Gazebo Harmonic resuelve model:// buscando en GZ_SIM_RESOURCE_PATH
-                y en los paths declarados en el fichero world con <uri>.
-              -->
               <albedo_map>model://caja_qr/materials/textures/QR-prueba1.png</albedo_map>
               <metalness>0.0</metalness>
               <roughness>0.9</roughness>
             </metal>
           </pbr>
-          <!-- Fallback si PBR no está disponible -->
           <ambient>1 1 1 1</ambient>
           <diffuse>1 1 1 1</diffuse>
+          <!-- Desactivar mipmapping para preservar los módulos del QR nítidos -->
+          <script>
+            <uri>model://caja_qr/materials/scripts/qr.material</uri>
+            <name>CarryBot/QRCode</name>
+          </script>
         </material>
       </visual>
 

@@ -34,7 +34,7 @@ OUTPUT_DIR  = os.path.join(BASE_DIR, "models", "caja_qr", "materials", "textures
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "QR-prueba1.png")
 
 # Tamaño final de la textura (px). 512 es suficiente para Gazebo.
-TEXTURE_SIZE = 512
+TEXTURE_SIZE = 1024
 
 # Formatos de imagen aceptados
 VALID_EXTENSIONS = {".png", ".jpg", ".jpeg", ".bmp", ".webp"}
