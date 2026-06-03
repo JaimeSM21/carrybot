@@ -91,6 +91,7 @@ class WebBridge(Node):
         self.create_subscription(String, '/web/nav_goal',    self._on_nav_goal,    10)
         self.create_subscription(String, '/web/patrol_goal', self._on_patrol_goal, 10)
         self.create_subscription(String, '/web/ruta_fija',   self._on_ruta_fija,   10)
+        self.create_subscription(String, '/web/pedido',      self._on_pedido,      10)
         self.create_subscription(String, '/web/cancel',      self._on_cancel,      10)
 
         # Publicadores de estado y anuncios de entrega
@@ -302,6 +303,44 @@ class WebBridge(Node):
                 )
             except Exception as err:
                 self._publish_status(f"ERROR inesperado en la ruta fija: {err}")
+
+        threading.Thread(target=run, daemon=True).start()
+
+    # ── pedido_individual ─────────────────────────────────────────────────────
+
+    def _on_pedido(self, msg):
+        """Callback que lanza la recogida de un pedido individual desde la web.
+
+        Recibe el nombre del pedido por /web/pedido y ejecuta ruta_fija
+        con el argumento --pedido <nombre> en un hilo separado.
+
+        Args:
+            msg (String): Nombre del pedido a ejecutar (p.ej. 'Pedido1').
+        """
+        nombre = msg.data.strip()
+        if not nombre:
+            self._publish_status("ERROR: el nombre del pedido no puede estar vacío.")
+            return
+
+        self._publish_status(f"Iniciando pedido individual: {nombre}...")
+
+        def run():
+            try:
+                result = subprocess.run(
+                    ['ros2', 'run', 'carrybot_nav_recogida', 'ruta_fija',
+                     '--pedido', nombre],
+                    capture_output=True, text=True
+                )
+                if result.returncode == 0:
+                    self._publish_status(f"Pedido '{nombre}' completado.")
+                else:
+                    self._publish_status(
+                        f"Pedido '{nombre}' fallido: {result.stderr[:100]}"
+                    )
+            except FileNotFoundError:
+                self._publish_status("ERROR: ejecutable 'ros2' no encontrado.")
+            except Exception as err:
+                self._publish_status(f"ERROR inesperado en pedido '{nombre}': {err}")
 
         threading.Thread(target=run, daemon=True).start()
 

@@ -19,6 +19,7 @@ Functions:
     main(): Funcion principal de ejecucion.
 """
 
+import argparse
 import json
 import os
 import time
@@ -290,14 +291,21 @@ def main(args=None):
     """
     Funcion principal de ejecucion del sistema de transporte Carrybot.
 
-    Inicializa rclpy y BasicNavigator, carga las coordenadas del JSON,
-    pregunta al usuario el modo de operacion (ruta completa o pedido
-    individual) y ejecuta el modo seleccionado.
+    Si se llama con --pedido <nombre>, ejecuta directamente ese pedido
+    individual sin pedir input al usuario (modo web).
+    Si se llama sin argumentos, muestra el menu interactivo.
 
     Args:
-        args (list, optional): Argumentos de linea de comandos para
-            inicializar rclpy. Por defecto es None.
+        args (list, optional): Argumentos de linea de comandos. Por defecto None.
     """
+    # Parsear argumentos antes de inicializar rclpy
+    parser = argparse.ArgumentParser(description='CarryBot — Sistema de entregas')
+    parser.add_argument(
+        '--pedido', type=str, default=None,
+        help='Nombre del pedido a ejecutar directamente (modo web)'
+    )
+    parsed_args, _ = parser.parse_known_args()
+
     rclpy.init(args=args)
     navigator = BasicNavigator()
 
@@ -305,7 +313,26 @@ def main(args=None):
         navigator.waitUntilNav2Active()
         datos_rutas = cargar_coordenadas()
 
-        # Seleccion de modo
+        # ── Modo web: pedido directo por argumento ────────────────────────────
+        if parsed_args.pedido:
+            nombre = parsed_args.pedido
+            if nombre not in datos_rutas['pedidos']:
+                print(
+                    f"[ERROR] Pedido '{nombre}' no encontrado. "
+                    f"Disponibles: {list(datos_rutas['pedidos'].keys())}"
+                )
+                return
+            coord_entrega = datos_rutas['entrega']
+            meta_entrega  = crear_pose(coord_entrega['x'], coord_entrega['y'])
+            coords        = datos_rutas['pedidos'][nombre]
+            meta_recogida = crear_pose(coords['x'], coords['y'])
+            try:
+                recoger_y_entregar(navigator, nombre, meta_recogida, meta_entrega)
+            except NavegacionError as err:
+                print(f"[ERROR] No se pudo completar la entrega: {err}")
+            return
+
+        # ── Modo interactivo: menu de seleccion ───────────────────────────────
         print("\n=== CARRYBOT — SISTEMA DE ENTREGAS ===")
         print("Modos disponibles:")
         print("  1) Ruta completa  (recoge todos los pedidos en orden)")
